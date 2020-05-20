@@ -120,3 +120,53 @@ class QuestionIndexViewTests(TestCase):
             self.assertQuerysetEqual(
                 response.context['latest_question_list'],['<Question: past question 1>','<Question: past question 2>']
             )
+
+class QuestionDetailViewsTests(TestCase):
+
+    """
+    class facilitates the creation of test units to test class view behavior
+    """
+    def test_future_question(self):
+
+        """
+        method checks of detail view returns 404 status code for questions with future pub_dates
+        """
+        future_question = create_question(question_text="future question",days=8)
+        url = reverse('polls:detail',args=(future_question.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code,404)
+
+    def test_past_question(self):
+
+        """
+        method checks if detail view displays a question with a past pub_date
+        """
+        past_question = create_question(question_text="past question",days=-9)
+        url = reverse('polls:detail',args=(past_question.id,))
+        response =  self.client.get(url)
+        self.assertEqual(response.status_code,200)
+
+class QuestionResultViewsTests(TestCase):
+
+    """
+    class facilitates the creation of test case to test result view behavior
+    """
+    def test_future_question(self):
+
+        """
+        method checks if view returns 404 status code when users try to view future question' results
+        """
+        future_question = create_question(question_text="future question",days=4)
+        url = reverse('polls:results',args=(future_question.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code,404)
+    
+    def test_past_question(self):
+
+        """
+        method checks if view displays the results of a question with past pub_date
+        """
+        past_question = create_question(question_text="past_question",days=-2)
+        url = reverse('polls:results',args=(past_question.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code,200)
