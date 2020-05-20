@@ -3,3 +3,5 @@ virtual/
 __pycache__/
 
 .venv
+
+.vscode/
