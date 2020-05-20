@@ -1,0 +1,10 @@
+li a {
+    color: rgb(70, 18, 77);
+    font-size: larger;
+}
+
+body {
+    background-image: url('images/business.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
